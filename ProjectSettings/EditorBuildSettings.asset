@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/mainMenu.unity
+    guid: 81868bb332046434598305770391f1c0
+  - enabled: 1
+    path: Assets/Scenes/make15.unity
+    guid: 27790987bb2abad46960ec2db81bde4d
+  - enabled: 1
+    path: Assets/Scenes/fractone.unity
+    guid: 50d0293fca812ea4b9df5dce314161a3
+  - enabled: 1
+    path: Assets/Scenes/chooseTable.unity
+    guid: 16d46dc92bc928745bed9fa73a330d5d
+  - enabled: 1
+    path: Assets/Scenes/jungleJim.unity
+    guid: 73569d13b695ea44e86d5155fb70e609
+  - enabled: 1
+    path: Assets/Scenes/chooseLevel.unity
+    guid: b2e1a4af0b2c63344b91004159a1e170
+  m_configObjects: {}

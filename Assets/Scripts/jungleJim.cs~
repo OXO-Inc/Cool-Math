@@ -1,0 +1,141 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
+
+public class jungleJim : MonoBehaviour {
+
+	static System.Random random = new System.Random();
+
+	private bool gameOver = false;
+
+	private string selected;
+	private string tableOf;
+
+	private int selectedToInt;
+	private int tableOff;
+	private int randomNumber;
+	private int rn;
+	private int rn1;
+	private int rn2;
+	private int rn3;
+	private int val;
+	private int correct;
+	private int sc;
+	private int sm;
+
+	private float secondCount;
+
+	private RaycastHit2D hit;
+
+	List<int> usedValues = new List<int>();
+
+	public Text toMultiply;
+	public Text scoreC;
+	public Text scoreM;
+	public Text time;
+
+	public GameObject r1;
+	public GameObject r2;
+	public GameObject r3;
+	public GameObject r4;
+
+	void Start () {
+
+		tableOf = PlayerPrefs.GetString ("tableOf");
+		tableOff = int.Parse (tableOf);
+		generateRandom ();
+	}
+
+	void generateRandom(){
+		
+		rn = random.Next (8) + 1;
+		correct = rn * tableOff;
+		toMultiply.text = tableOf + " X " + rn.ToString ();
+		randomNumber = random.Next (3) + 1;
+		generateRemainingRandom (rn);
+		if (randomNumber == 1) {
+			r1.GetComponentInChildren<TextMesh> ().text = correct.ToString ();
+			r2.GetComponentInChildren<TextMesh> ().text = (tableOff*rn1).ToString ();
+			r3.GetComponentInChildren<TextMesh> ().text = (tableOff*rn2).ToString ();
+			r4.GetComponentInChildren<TextMesh> ().text = (tableOff*rn3).ToString ();
+		}
+		else if (randomNumber == 2) {
+			r1.GetComponentInChildren<TextMesh> ().text = (tableOff*rn1).ToString ();
+			r2.GetComponentInChildren<TextMesh> ().text = correct.ToString ();
+			r3.GetComponentInChildren<TextMesh> ().text = (tableOff*rn2).ToString ();
+			r4.GetComponentInChildren<TextMesh> ().text = (tableOff*rn3).ToString ();
+		}
+		else if (randomNumber == 3) {
+			r1.GetComponentInChildren<TextMesh> ().text = (tableOff * rn2).ToString ();
+			r2.GetComponentInChildren<TextMesh> ().text = (tableOff * rn1).ToString ();
+			r3.GetComponentInChildren<TextMesh> ().text = (correct).ToString ();
+			r4.GetComponentInChildren<TextMesh> ().text = (tableOff * rn3).ToString ();
+		} else {
+			r1.GetComponentInChildren<TextMesh> ().text = (tableOff*rn3).ToString ();
+			r2.GetComponentInChildren<TextMesh> ().text = (tableOff*rn2).ToString ();
+			r3.GetComponentInChildren<TextMesh> ().text = (tableOff*rn1).ToString ();
+			r4.GetComponentInChildren<TextMesh> ().text = correct.ToString ();
+		}
+	}
+
+	void generateRemainingRandom(int a){
+		
+		usedValues.Add (a);
+		rn1 = Random.Range(1, 9);
+		while(usedValues.Contains(rn1))
+		{
+			rn1 = Random.Range(1, 9);
+		}
+		usedValues.Add (rn1);
+		rn2 = Random.Range(1, 9);
+		while(usedValues.Contains(rn2))
+		{
+			rn2 = Random.Range(1, 9);
+		}
+		usedValues.Add (rn2);
+		rn3 = Random.Range(1, 9);
+		while(usedValues.Contains(rn3))
+		{
+			rn3 = Random.Range(1, 9);
+		}
+		usedValues.Clear ();
+	}
+
+	void Update () {
+
+		secondCount += Time.deltaTime;
+		if (secondCount < 50)
+			time.text = "00:" + (59 - (int)secondCount).ToString ();
+		else if (secondCount == 59)
+			gameOver = true;
+		else
+			time.text = "00:0" + (59-(int)secondCount).ToString ();
+
+		if (Input.GetMouseButtonDown (0) && gameOver == false) {
+			hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
+			if (hit.collider != null) {
+				selected = hit.transform.gameObject.GetComponentInChildren<TextMesh> ().text;
+				selectedToInt = int.Parse (selected);
+				if (selectedToInt == correct) {
+					sc += 1;
+					scoreC.text = sc.ToString ();
+					generateRandom ();
+				} else {
+					sm += 1;
+					scoreM.text = sm.ToString ();
+				}
+
+			}
+		
+		}
+	}
+
+	public void chooseTable()
+	{
+		SceneManager.LoadScene ("chooseTable");
+	}
+
+}
